@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
    std::string bloatTag;
    if (bloatFactor > 1)
       bloatTag = std::string("X") + std::to_string(bloatFactor);
-   std::string outputFile = outputPath + "/B2HHH" + bloatTag + "~" + compressionShorthand + ".ntuple";
+   std::string outputFile = outputPath;
    std::cout << "Converting " << inputFile << " --> " << outputFile << std::endl;
 
    std::unique_ptr<TFile> f(TFile::Open(inputFile.c_str()));

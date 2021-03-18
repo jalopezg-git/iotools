@@ -285,7 +285,7 @@ static void NTupleDirect(const std::string &path)
    using RNTupleModel = ROOT::Experimental::RNTupleModel;
 
    // Trigger download if needed.
-   delete OpenOrDownload(path);
+   //delete OpenOrDownload(path);
 
    auto ts_init = std::chrono::steady_clock::now();
 
@@ -417,16 +417,7 @@ int main(int argc, char **argv) {
    }
 
    auto suffix = GetSuffix(input_path);
-   switch (GetFileFormat(suffix)) {
-   case FileFormats::kRoot:
-      if (use_rdf) {
-         ROOT::RDataFrame df("DecayTree", input_path);
-         Dataframe(df);
-      } else {
-         TreeDirect(input_path);
-      }
-      break;
-   case FileFormats::kNtuple:
+   try {
       if (use_rdf) {
          //using RNTupleDS = ROOT::Experimental::RNTupleDS;
          //auto options = GetRNTupleOptions();
@@ -437,10 +428,8 @@ int main(int argc, char **argv) {
       } else {
          NTupleDirect(input_path);
       }
-      break;
-   default:
-      std::cerr << "Invalid file format: " << suffix << std::endl;
-      return 1;
+   } catch (std::runtime_error &e) {
+      std::cerr << "Caught exception: " << e.what() << std::endl;
    }
 
    auto ts_end = std::chrono::steady_clock::now();
